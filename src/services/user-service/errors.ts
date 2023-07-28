@@ -6,3 +6,10 @@ export function duplicatedEmailError(): ApplicationError {
         message: 'There is already an user with given email',
     };
 }
+
+export function invalidCredentialsError(): ApplicationError {
+    return {
+        name: 'InvalidCredentialsError',
+        message: 'email or password are incorrect',
+    };
+}
