@@ -28,3 +28,14 @@ export async function getCredentialById(req: AuthenticatedRequest, res: Response
         return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+export async function getCredentials(req: AuthenticatedRequest, res: Response) {
+    const { userId } = req;
+    try {
+        const credentials = await credentialService.getCredentials(userId);
+        return res.status(httpStatus.OK).send(credentials);
+    } catch (error) {
+        if (error.name === "NotFoundError") return res.status(httpStatus.NOT_FOUND).send(error.message);
+        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    }
+}

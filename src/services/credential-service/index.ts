@@ -15,9 +15,15 @@ export async function getCredentialById(userId: number, credentialId: number) {
     return credential;
 }
 
+export async function getCredentials(userId: number) {
+    const credentials = await credentialRepository.getCredendials(userId);
+    return credentials;
+}
+
 const credentialService = {
     createCredential,
-    getCredentialById
+    getCredentialById,
+    getCredentials
 };
 
 export default credentialService;

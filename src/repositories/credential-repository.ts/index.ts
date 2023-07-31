@@ -50,10 +50,28 @@ async function createCredential(params: createCredentialParams, userId: number) 
     return { ...credential, password: decryptedPassword };
 }
 
+async function getCredendials(userId: number) {
+    const credentials = await prisma.credential.findMany({
+        where: {
+            userId
+        }
+    });
+    if (!credentials) throw notFoundError();
+    const decryptedCredentials = []
+    credentials.map(credential => {
+        const decryptedPassword = cryptr.decrypt(credential.password);
+        console.log(decryptedPassword)
+        decryptedCredentials.push({ ...credential, password: decryptedPassword });
+    })
+
+    return decryptedCredentials;
+}
+
 const credentialRepository = {
     getCredentialByUserAndName,
     createCredential,
-    getCREdentialById
+    getCREdentialById,
+    getCredendials
 };
 
 export default credentialRepository;
