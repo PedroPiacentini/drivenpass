@@ -11,14 +11,14 @@ async function findByEmail(email: string, select?: Prisma.UserSelect) {
     if (select) {
         params.select = select;
     }
-
     return prisma.user.findUnique(params);
 }
 
 async function create(data: Prisma.UserUncheckedCreateInput) {
-    return prisma.user.create({
+    const result = prisma.user.create({
         data,
     });
+    return result;
 }
 
 const userRepository = {

@@ -6,7 +6,6 @@ import httpStatus from "http-status";
 
 export async function register(req: Request, res: Response) {
     const { email, password } = req.body as CreateUserParams;
-
     try {
         const user = await userService.createUser({ email, password });
         return res.status(httpStatus.CREATED).json({
@@ -25,10 +24,11 @@ export async function login(req: Request, res: Response) {
     const { email, password } = req.body as CreateUserParams;
 
     try {
-        const result = await userService.login({ email, password });
-
-        return res.status(httpStatus.OK).send(result);
+        const { token, user } = await userService.login({ email, password });
+        const { id } = user;
+        return res.status(httpStatus.OK).send({ email, token, id });
     } catch (error) {
+        if (error.name === "InvalidCredentialsError") return res.status(httpStatus.UNAUTHORIZED).send(error.message)
         return res.status(httpStatus.UNAUTHORIZED).send({});
     }
 }
