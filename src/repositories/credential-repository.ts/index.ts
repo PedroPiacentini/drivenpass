@@ -3,7 +3,7 @@ import { notFoundError } from '@/errors';
 import { createCredentialParams } from '@/protocols';
 import Cryptr from 'cryptr';
 
-const appSecret = "segredo";
+const appSecret = process.env.CRYPTR_SECRET;
 const cryptr = new Cryptr(appSecret);
 
 async function getCredentialByUserAndName(userId: number, credentialTitle: string) {
