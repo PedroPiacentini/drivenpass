@@ -1,4 +1,5 @@
 import { prisma } from '@/config';
+import { notFoundError } from '@/errors';
 import { createCredentialParams } from '@/protocols';
 import Cryptr from 'cryptr';
 
@@ -14,6 +15,19 @@ async function getCredentialByUserAndName(userId: number, credentialTitle: strin
     });
 
     return credential;
+}
+
+async function getCREdentialById(credentialId: number) {
+    const credential = await prisma.credential.findFirst({
+        where: {
+            id: credentialId,
+        },
+    });
+    if (!credential) throw notFoundError();
+
+    const decryptedPassword = cryptr.decrypt(credential.password);
+
+    return { ...credential, password: decryptedPassword };
 }
 
 async function createCredential(params: createCredentialParams, userId: number) {
@@ -38,7 +52,8 @@ async function createCredential(params: createCredentialParams, userId: number) 
 
 const credentialRepository = {
     getCredentialByUserAndName,
-    createCredential
+    createCredential,
+    getCREdentialById
 };
 
 export default credentialRepository;
