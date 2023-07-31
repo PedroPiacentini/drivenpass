@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { AuthenticatedRequest } from "@/middlewares";
-import { ApplicationError, createCredentialParams } from "@/protocols";
+import { createCredentialParams } from "@/protocols";
 import httpStatus from "http-status";
 import credentialService from "@/services/credential-service";
 

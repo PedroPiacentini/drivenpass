@@ -5,7 +5,7 @@ import cors from "cors";
 
 import { loadEnv, connectDb, disconnectDB } from "config";
 import { usersRouter } from "./routers/users-router";
-import { credentialRouter, wifiRouter } from "./routers";
+import { credentialRouter, networkRouter } from "./routers";
 
 loadEnv();
 
@@ -16,7 +16,7 @@ app
     .get('/health', (_req, res) => res.send('OK!'))
     .use("/users", usersRouter)
     .use("/credentials", credentialRouter)
-    .use("/wifi", wifiRouter)
+    .use("/network", networkRouter)
 
 export function init(): Promise<Express> {
     connectDb();
