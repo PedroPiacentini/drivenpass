@@ -15,6 +15,13 @@ export async function getCredentialById(userId: number, credentialId: number) {
     return credential;
 }
 
+export async function deleteCredentialById(userId: number, credentialId: number) {
+    const credential = await credentialRepository.getCREdentialById(credentialId);
+    if (credential.userId !== userId) throw notFoundError();
+    const deletedCredential = await credentialRepository.deleteCredentialById(userId, credentialId);
+    return deletedCredential;
+}
+
 export async function getCredentials(userId: number) {
     const credentials = await credentialRepository.getCredendials(userId);
     return credentials;
@@ -23,7 +30,8 @@ export async function getCredentials(userId: number) {
 const credentialService = {
     createCredential,
     getCredentialById,
-    getCredentials
+    getCredentials,
+    deleteCredentialById
 };
 
 export default credentialService;

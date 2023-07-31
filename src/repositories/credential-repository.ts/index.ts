@@ -30,6 +30,20 @@ async function getCREdentialById(credentialId: number) {
     return { ...credential, password: decryptedPassword };
 }
 
+async function deleteCredentialById(userId: number, credentialId: number) {
+    const credential = await prisma.credential.delete({
+        where: {
+            id: credentialId,
+            userId
+        },
+    });
+    if (!credential) throw notFoundError();
+
+    const decryptedPassword = cryptr.decrypt(credential.password);
+
+    return { ...credential, password: decryptedPassword };
+}
+
 async function createCredential(params: createCredentialParams, userId: number) {
     const { title, url, username, password } = params;
 
@@ -71,7 +85,8 @@ const credentialRepository = {
     getCredentialByUserAndName,
     createCredential,
     getCREdentialById,
-    getCredendials
+    getCredendials,
+    deleteCredentialById
 };
 
 export default credentialRepository;
